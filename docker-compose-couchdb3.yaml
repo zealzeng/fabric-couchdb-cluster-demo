@@ -1,0 +1,38 @@
+#
+# Copyright IBM Corp All Rights Reserved
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+
+networks:
+  basic:
+
+services:
+  couchdb3:
+    container_name: couchdb
+    #image: hyperledger/fabric-couchdb:0.4.14
+    image: couchdb:2.2.0
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=admin
+      - COUCHDB_PASSWORD=adminpwd
+      - NODENAME=192.168.31.121
+      - ERL_FLAGS=-setcookie "brumbrum" -kernel inet_dist_listen_min 9100 -kernel inet_dist_listen_max 9100
+      - COUCHDB_SECRET=1234567890
+    ports:
+      - 5984:5984
+      #- 5986:5986
+      - 4369:4369
+      - 9100:9100
+      #- 9101:9101
+      #- 9102:9102
+    volumes:
+      - ./couchdb3/data:/opt/couchdb/data
+    #  - ./couchdb3/etc/local.ini:/opt/couchdb/etc/local.ini
+    #  - ./couchdb3/etc/vm.args:/opt/couchdb/etc/vm.args
+    networks:
+      - basic
+
+
